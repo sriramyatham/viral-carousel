@@ -583,6 +583,9 @@
       <div class="nav-actions">
         <a href="#viewer" class="nav-link">Slide Showcase</a>
         <a href="#prompts" class="nav-link">Prompt Vault</a>
+        <button class="btn btn-secondary btn-sm" onclick="openLeadsDbModal()" style="border-color:rgba(255,31,53,0.4);">
+          📊 Database (<span id="leadCountBadge">0</span>)
+        </button>
         <button class="btn btn-primary btn-sm" onclick="openLeadModal('nav_cta')">Unlock Prompts</button>
       </div>
     </div>
@@ -849,7 +852,7 @@ Structure:
     <div class="container">
       <div class="footer-sig">@impact.artist</div>
       <p>Viral AI Carousel Blueprint • Built with Kallaway Editorial System</p>
-      <button class="settings-btn" onclick="openSettingsModal()">⚙ Configure Google Sheets Webhook</button>
+      <button class="settings-btn" onclick="openLeadsDbModal()">📊 View Database & Leads</button> &nbsp;•&nbsp; <button class="settings-btn" onclick="openSettingsModal()">⚙ Configure Google Sheets Webhook</button>
     </div>
   </footer>
 
@@ -1016,9 +1019,95 @@ Structure:
       }
     }
 
+    
+    // Leads Database Management
+    function openLeadsDbModal() {
+      renderLeadsTable();
+      document.getElementById('leadsDbModal').classList.add('active');
+    }
+
+    function closeLeadsDbModal() {
+      document.getElementById('leadsDbModal').classList.remove('active');
+    }
+
+    function renderLeadsTable() {
+      const leads = JSON.parse(localStorage.getItem('captured_leads') || '[]');
+      const tbody = document.getElementById('leadsTableBody');
+      const totalText = document.getElementById('dbTotalText');
+      const badge = document.getElementById('leadCountBadge');
+      const syncBanner = document.getElementById('syncStatusText');
+
+      if (badge) badge.textContent = leads.length;
+      if (totalText) totalText.textContent = `Total Leads: ${leads.length}`;
+
+      if (GOOGLE_SHEET_WEBHOOK_URL) {
+        syncBanner.innerHTML = `<span style="color:#2ecc71;">✓ Google Sheets Connected:</span> ${GOOGLE_SHEET_WEBHOOK_URL.substring(0, 42)}...`;
+      } else {
+        syncBanner.innerHTML = `<span style="color:#f39c12;">⚠ Google Sheets:</span> Not connected (leads stored in browser). <a href="#" onclick="openSettingsModal()" style="color:var(--red);">Connect Live Sheet</a>`;
+      }
+
+      if (leads.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="padding:28px 14px; text-align:center; color:var(--text-muted);">
+              No leads captured yet. When visitors enter their name & email, they will appear here in real-time!
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = leads.map((l, i) => {
+        const d = new Date(l.time);
+        const dateStr = isNaN(d) ? l.time : d.toLocaleString();
+        return `
+          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+            <td style="padding:10px 14px; color:var(--text-muted);">${i + 1}</td>
+            <td style="padding:10px 14px; font-weight:600; color:#fff;">${escapeHtml(l.name || 'Anonymous')}</td>
+            <td style="padding:10px 14px; color:var(--red); font-family:monospace;">${escapeHtml(l.email)}</td>
+            <td style="padding:10px 14px; color:var(--text-gray); font-size:12px;">${dateStr}</td>
+            <td style="padding:10px 14px;"><span style="font-size:11px; padding:2px 8px; border-radius:4px; background:rgba(46,204,113,0.15); color:#2ecc71; border:1px solid rgba(46,204,113,0.4);">Unlocked</span></td>
+          </tr>
+        `;
+      }).reverse().join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function exportLeadsToCSV() {
+      const leads = JSON.parse(localStorage.getItem('captured_leads') || '[]');
+      if (leads.length === 0) {
+        alert('No leads to export yet!');
+        return;
+      }
+      let csv = 'Timestamp,Name,Email,Status\n';
+      leads.forEach(l => {
+        csv += `"${l.time}","${(l.name||'').replace(/"/g, '""')}","${(l.email||'').replace(/"/g, '""')}","Unlocked"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `viral_carousel_leads_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function clearAllLeads() {
+      if (confirm('Are you sure you want to clear the locally stored leads?')) {
+        localStorage.removeItem('captured_leads');
+        renderLeadsTable();
+        showToast('Local leads database cleared.');
+      }
+    }
+
     // Auto popup modal after 4 seconds if not unlocked
     window.addEventListener('DOMContentLoaded', () => {
       initViewer();
+      const initialLeads = JSON.parse(localStorage.getItem("captured_leads") || "[]");
+      const b = document.getElementById("leadCountBadge"); if (b) b.textContent = initialLeads.length;
       if (!isUnlocked) {
         setTimeout(() => {
           openLeadModal('timed_popup');
@@ -1026,5 +1115,59 @@ Structure:
       }
     });
   </script>
+
+  <!-- Leads Database Modal -->
+  <div class="modal-backdrop" id="leadsDbModal">
+    <div class="modal-card" style="max-width:780px; text-align:left;">
+      <button class="modal-close" onclick="closeLeadsDbModal()">✕</button>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
+        <div>
+          <span class="modal-badge">Leads Database</span>
+          <h3 class="modal-title" style="font-size:22px; margin-bottom:4px;">Collected Leads <em>Database</em></h3>
+          <p style="font-size:13px; color:var(--text-gray); margin:0;">
+            All emails captured before unlocking the prompts.
+          </p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-primary btn-sm" onclick="exportLeadsToCSV()">
+            📥 Download CSV (Excel)
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="openSettingsModal()">
+            ⚙ Google Sheets Setup
+          </button>
+        </div>
+      </div>
+
+      <!-- Sync Status Banner -->
+      <div id="syncStatusBanner" style="background:#0d0e12; border:1px solid rgba(255,255,255,0.1); padding:10px 14px; border-radius:8px; font-size:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+        <span id="syncStatusText" style="color:var(--text-gray);">Google Sheets Webhook: Not Connected</span>
+        <button onclick="openSettingsModal()" style="background:none; border:none; color:var(--red); font-size:12px; text-decoration:underline; cursor:pointer;">Configure</button>
+      </div>
+
+      <!-- Table Container -->
+      <div style="max-height:340px; overflow-y:auto; border:1px solid rgba(255,255,255,0.08); border-radius:10px; background:#090a0d;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;">
+          <thead>
+            <tr style="background:#14151c; border-bottom:1px solid rgba(255,255,255,0.1); color:var(--text-gray);">
+              <th style="padding:10px 14px; font-weight:700;">#</th>
+              <th style="padding:10px 14px; font-weight:700;">NAME</th>
+              <th style="padding:10px 14px; font-weight:700;">EMAIL</th>
+              <th style="padding:10px 14px; font-weight:700;">DATE & TIME</th>
+              <th style="padding:10px 14px; font-weight:700;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="leadsTableBody">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:var(--text-muted);" id="dbTotalText">Total Leads: 0</span>
+        <button onclick="clearAllLeads()" style="background:none; border:none; color:var(--text-muted); font-size:11px; text-decoration:underline; cursor:pointer;">Clear Local Leads</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
