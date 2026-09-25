@@ -958,12 +958,31 @@ Structure:
       leads.push({ name, email, time: new Date().toISOString() });
       localStorage.setItem('captured_leads', JSON.stringify(leads));
 
-      // Send to Google Sheets Webhook if configured
+      // 1. Send to FormSubmit Cloud Database & Email notification (Zero setup required)
+      const recipientEmail = localStorage.getItem('lead_notify_email') || 'sriramyatham@gmail.com';
+      try {
+        fetch(`https://formsubmit.co/ajax/${recipientEmail}`, {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            _subject: `🔥 New Lead Captured: ${name} (${email})`,
+            _template: 'table',
+            source: 'Viral AI Carousel Landing Page'
+          })
+        }).catch(e => console.warn('FormSubmit log:', e));
+      } catch (e) {}
+
+      // 2. Send to Google Sheets Webhook if configured
       if (GOOGLE_SHEET_WEBHOOK_URL) {
         try {
           await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
             method: 'POST',
-            mode: 'no-cors', // standard for Google Apps Script webhooks
+            mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, email, source: 'Viral Carousel Landing Page' })
           });
