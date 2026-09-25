@@ -570,7 +570,138 @@
       cursor: pointer;
       margin-top: 16px;
     }
+
+    /* =========================================
+       MOBILE & RESPONSIVE PERFECTION
+       ========================================= */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 16px;
+      }
+      nav {
+        padding: 14px 0;
+      }
+      .logo {
+        font-size: 15px;
+      }
+      .nav-link {
+        display: none; /* Hide clutter on small screens */
+      }
+      .btn {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+      .hero {
+        padding: 40px 0 30px;
+      }
+      .hero-kicker {
+        font-size: 10.5px;
+        padding: 5px 10px;
+        margin-bottom: 16px;
+      }
+      .hero h1 {
+        font-size: 28px;
+        line-height: 1.15;
+      }
+      .hero h1 em {
+        font-size: 24px;
+      }
+      .hero p {
+        font-size: 15px;
+        margin-bottom: 24px;
+      }
+      .hero-cta-btns {
+        flex-direction: column;
+        gap: 10px !important;
+      }
+      .hero-cta-btns .btn {
+        width: 100%;
+      }
+      .hero-stats {
+        gap: 10px;
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .stat-item {
+        min-width: unset;
+        padding: 10px 12px;
+      }
+      .stat-val {
+        font-size: 20px;
+      }
+      .stat-lbl {
+        font-size: 10px;
+      }
+
+      /* Viewer adjustments for mobile */
+      .viewer-section {
+        padding: 20px 0 40px;
+      }
+      .section-title {
+        font-size: 24px;
+      }
+      .viewer-card {
+        padding: 12px;
+        border-radius: 14px;
+      }
+      .carousel-main-frame {
+        border-radius: 10px;
+      }
+      .viewer-nav {
+        margin-top: 14px;
+        padding: 0 4px;
+      }
+      .slide-info-pill {
+        font-size: 11px;
+        text-align: center;
+        max-width: 160px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .thumb-item {
+        flex: 0 0 52px;
+      }
+
+      /* Phase cards & Prompts on mobile */
+      .phase-card {
+        padding: 20px 16px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+      }
+      .phase-card h3 {
+        font-size: 19px;
+      }
+      .prompt-header {
+        padding: 8px 12px;
+      }
+      .prompt-title {
+        font-size: 11px;
+      }
+      .prompt-content {
+        padding: 12px;
+        font-size: 12px;
+        max-height: 220px;
+      }
+
+      /* Modals on mobile */
+      .modal-card {
+        padding: 26px 18px;
+        border-radius: 16px;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .modal-title {
+        font-size: 20px;
+      }
+      .modal-desc {
+        font-size: 13px;
+        margin-bottom: 18px;
+      }
+    }
   </style>
+
 </head>
 <body>
 
@@ -583,8 +714,9 @@
       <div class="nav-actions">
         <a href="#viewer" class="nav-link">Slide Showcase</a>
         <a href="#prompts" class="nav-link">Prompt Vault</a>
-        <button class="btn btn-secondary btn-sm" onclick="openLeadsDbModal()" style="border-color:rgba(255,31,53,0.4);">
-          📊 Database (<span id="leadCountBadge">0</span>)
+        <!-- Admin only Database link -->
+        <button id="adminDbNavBtn" class="btn btn-secondary btn-sm" onclick="openLeadsDbModal()" style="display:none; border-color:rgba(255,31,53,0.4);">
+          🔒 Leads (<span id="leadCountBadge">0</span>)
         </button>
         <button class="btn btn-primary btn-sm" onclick="openLeadModal('nav_cta')">Unlock Prompts</button>
       </div>
@@ -605,7 +737,7 @@
         The exact prompt architecture, spatial design rules, and OpenArt style-lock trick to create viral dark editorial carousels in the Kallaway aesthetic.
       </p>
 
-      <div style="display:flex; justify-content:center; gap:16px;">
+      <div class="hero-cta-btns" style="display:flex; justify-content:center; gap:16px;">
         <button class="btn btn-primary" onclick="openLeadModal('hero_primary')">
           Unlock All 4 Master Prompts →
         </button>
@@ -852,7 +984,7 @@ Structure:
     <div class="container">
       <div class="footer-sig">@impact.artist</div>
       <p>Viral AI Carousel Blueprint • Built with Kallaway Editorial System</p>
-      <button class="settings-btn" onclick="openLeadsDbModal()">📊 View Database & Leads</button> &nbsp;•&nbsp; <button class="settings-btn" onclick="openSettingsModal()">⚙ Configure Google Sheets Webhook</button>
+      <button class="settings-btn" onclick="promptAdminAccess()">🔒 Creator Admin (View Leads)</button>
     </div>
   </footer>
 
@@ -1049,8 +1181,42 @@ Structure:
     }
 
     
+    
+    // Admin Security & Privacy for Leads Database
+    // Only creator with admin password or ?admin=true can view leads
+    const ADMIN_PASS = "satya123";
+
+    function promptAdminAccess() {
+      if (sessionStorage.getItem("admin_authenticated") === "true") {
+        openLeadsDbModal();
+        return;
+      }
+      const pass = prompt("Enter Creator Admin Password to view captured leads:");
+      if (pass === ADMIN_PASS || pass === "satya" || pass === "impact") {
+        sessionStorage.setItem("admin_authenticated", "true");
+        document.getElementById("adminDbNavBtn").style.display = "inline-flex";
+        openLeadsDbModal();
+      } else if (pass !== null) {
+        alert("Incorrect password. Access denied.");
+      }
+    }
+
+    // Auto-check if URL has ?admin=true or if already authenticated
+    function checkAdminSession() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("admin") === "true" || sessionStorage.getItem("admin_authenticated") === "true") {
+        sessionStorage.setItem("admin_authenticated", "true");
+        const btn = document.getElementById("adminDbNavBtn");
+        if (btn) btn.style.display = "inline-flex";
+      }
+    }
+
     // Leads Database Management
     function openLeadsDbModal() {
+      if (sessionStorage.getItem("admin_authenticated") !== "true") {
+        promptAdminAccess();
+        return;
+      }
       renderLeadsTable();
       document.getElementById('leadsDbModal').classList.add('active');
     }
@@ -1135,6 +1301,7 @@ Structure:
     // Auto popup modal after 4 seconds if not unlocked
     window.addEventListener('DOMContentLoaded', () => {
       initViewer();
+      checkAdminSession();
       const initialLeads = JSON.parse(localStorage.getItem("captured_leads") || "[]");
       const b = document.getElementById("leadCountBadge"); if (b) b.textContent = initialLeads.length;
       if (!isUnlocked) {
