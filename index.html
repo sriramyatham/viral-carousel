@@ -718,7 +718,7 @@
         <button id="adminDbNavBtn" class="btn btn-secondary btn-sm" onclick="openLeadsDbModal()" style="display:none; border-color:rgba(255,31,53,0.4);">
           🔒 Leads (<span id="leadCountBadge">0</span>)
         </button>
-        <a href="#prompts" class="btn btn-primary btn-sm">Get Prompts ↓</a>
+        <button class="btn btn-primary btn-sm" onclick="openLeadModal('nav_cta')">Unlock Prompts</button>
       </div>
     </div>
   </nav>
@@ -738,9 +738,9 @@
       </p>
 
       <div class="hero-cta-btns" style="display:flex; justify-content:center; gap:16px;">
-        <a href="#prompts" class="btn btn-primary">
-          Get All 4 Master Prompts ↓
-        </a>
+        <button class="btn btn-primary" onclick="openLeadModal('hero_primary')">
+          Unlock All 4 Master Prompts →
+        </button>
         <a href="#viewer" class="btn btn-secondary">
           Watch Screen Recording
         </a>
@@ -1005,7 +1005,7 @@ Structure:
     ];
 
     let currentSlideIdx = 0;
-    let isUnlocked = true; // Always unlocked - no gating
+    let isUnlocked = localStorage.getItem('carousel_unlocked') === 'true';
 
     // Initialize Viewer
     function initViewer() {
@@ -1064,8 +1064,7 @@ Structure:
 
     // Lead Gate Modal
     function openLeadModal(source = 'default') {
-      if (isUnlocked) {
-        showToast('All prompts are already unlocked!');
+      if (isUnlocked && source === 'auto_popup') {
         return;
       }
       document.getElementById('leadModal').classList.add('active');
@@ -1145,8 +1144,12 @@ Structure:
       }, 800);
     }
 
-    // 1-Click Copy Prompt (Always instantly copies)
+    // 1-Click Copy Prompt (Gated: requires email first)
     function copyPrompt(id) {
+      if (!isUnlocked) {
+        openLeadModal('prompt_click');
+        return;
+      }
       const el = document.getElementById(id);
       if (el) {
         navigator.clipboard.writeText(el.textContent.trim()).then(() => {
@@ -1300,7 +1303,11 @@ Structure:
       checkAdminSession();
       const initialLeads = JSON.parse(localStorage.getItem("captured_leads") || "[]");
       const b = document.getElementById("leadCountBadge"); if (b) b.textContent = initialLeads.length;
-      // No popup - directly accessible to everyone
+      if (!isUnlocked) {
+        setTimeout(() => {
+          openLeadModal('auto_popup');
+        }, 2200);
+      }
     });
   </script>
 
