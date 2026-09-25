@@ -718,7 +718,7 @@
         <button id="adminDbNavBtn" class="btn btn-secondary btn-sm" onclick="openLeadsDbModal()" style="display:none; border-color:rgba(255,31,53,0.4);">
           🔒 Leads (<span id="leadCountBadge">0</span>)
         </button>
-        <button class="btn btn-primary btn-sm" onclick="openLeadModal('nav_cta')">Unlock Prompts</button>
+        <a href="#prompts" class="btn btn-primary btn-sm">Get Prompts ↓</a>
       </div>
     </div>
   </nav>
@@ -738,9 +738,9 @@
       </p>
 
       <div class="hero-cta-btns" style="display:flex; justify-content:center; gap:16px;">
-        <button class="btn btn-primary" onclick="openLeadModal('hero_primary')">
-          Unlock All 4 Master Prompts →
-        </button>
+        <a href="#prompts" class="btn btn-primary">
+          Get All 4 Master Prompts ↓
+        </a>
         <a href="#viewer" class="btn btn-secondary">
           Watch Screen Recording
         </a>
@@ -1005,7 +1005,7 @@ Structure:
     ];
 
     let currentSlideIdx = 0;
-    let isUnlocked = localStorage.getItem('carousel_unlocked') === 'true';
+    let isUnlocked = true; // Always unlocked - no gating
 
     // Initialize Viewer
     function initViewer() {
@@ -1145,16 +1145,12 @@ Structure:
       }, 800);
     }
 
-    // 1-Click Copy Prompt
+    // 1-Click Copy Prompt (Always instantly copies)
     function copyPrompt(id) {
-      if (!isUnlocked) {
-        openLeadModal('prompt_click');
-        return;
-      }
       const el = document.getElementById(id);
       if (el) {
         navigator.clipboard.writeText(el.textContent.trim()).then(() => {
-          showToast('Copied prompt to clipboard!');
+          showToast('✓ Copied prompt to clipboard!');
         });
       }
     }
@@ -1304,11 +1300,7 @@ Structure:
       checkAdminSession();
       const initialLeads = JSON.parse(localStorage.getItem("captured_leads") || "[]");
       const b = document.getElementById("leadCountBadge"); if (b) b.textContent = initialLeads.length;
-      if (!isUnlocked) {
-        setTimeout(() => {
-          openLeadModal('timed_popup');
-        }, 3500);
-      }
+      // No popup - directly accessible to everyone
     });
   </script>
 
