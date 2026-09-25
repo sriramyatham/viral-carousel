@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viral AI Carousel Blueprint — Kallaway System (@impact.artist)</title>
+  <meta name="description" content="The complete 10-minute workflow to build high-retention 7-slide Instagram carousels using 100% free AI tools.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #09090c;
+      --card-bg: rgba(18, 19, 24, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --red: #ff1f35;
+      --red-glow: rgba(255, 31, 53, 0.35);
+      --red-subtle: rgba(255, 31, 53, 0.12);
+      --text-white: #ffffff;
+      --text-gray: #a1a1aa;
+      --text-muted: #71717a;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-white);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 50% 15%, rgba(255, 31, 53, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 50% 65%, rgba(255, 31, 53, 0.08) 0%, transparent 50%),
+        radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+      background-size: 100% 100%, 100% 100%, 20px 20px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Top Navigation */
+    nav {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--card-border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 9, 12, 0.85);
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo span.badge {
+      font-size: 10px;
+      padding: 3px 8px;
+      background: var(--red-subtle);
+      border: 1px solid var(--red);
+      color: var(--red);
+      border-radius: 4px;
+      letter-spacing: .08em;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .nav-link {
+      color: var(--text-gray);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #fff; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--red);
+      color: #fff;
+      box-shadow: 0 0 24px var(--red-glow);
+    }
+    .btn-primary:hover {
+      background: #e01429;
+      transform: translateY(-1px);
+      box-shadow: 0 0 32px rgba(255, 31, 53, 0.55);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #fff;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-sm {
+      padding: 8px 14px;
+      font-size: 12px;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--red);
+      background: var(--red-subtle);
+      border: 1px solid var(--red);
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 5vw, 62px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 em {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      color: var(--red);
+      text-transform: none;
+      display: block;
+      font-weight: 600;
+      letter-spacing: 0;
+      text-shadow: 0 0 20px var(--red-glow);
+    }
+    .hero p {
+      max-width: 680px;
+      margin: 0 auto 36px;
+      font-size: 18px;
+      color: var(--text-gray);
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    .stat-item {
+      text-align: center;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 14px 24px;
+      border-radius: 12px;
+      min-width: 140px;
+    }
+    .stat-val {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .stat-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    /* Carousel Viewer Section */
+    .viewer-section {
+      padding: 40px 0 80px;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .section-kicker {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 32px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .viewer-card {
+      background: #101116;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .carousel-main-frame {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: #000;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .carousel-main-frame video, .carousel-main-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .viewer-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding: 0 10px;
+    }
+    .slide-info-pill {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--red);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .thumb-strip {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+    .thumb-item {
+      flex: 0 0 64px;
+      aspect-ratio: 4 / 5;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.5;
+      transition: all 0.2s;
+      background: #000;
+    }
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .thumb-item.active {
+      border-color: var(--red);
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    /* Process & Prompts Grid */
+    .process-section {
+      padding: 60px 0;
+    }
+    .phase-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 32px;
+      backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .phase-card:hover {
+      border-color: rgba(255, 31, 53, 0.4);
+    }
+    .phase-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--red-subtle);
+      border: 1px solid var(--red);
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+    .phase-card h3 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      margin-bottom: 8px;
+    }
+    .phase-card h3 em {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      color: var(--red);
+      font-weight: 600;
+    }
+    .phase-desc {
+      color: var(--text-gray);
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    /* Prompt Box with 1-click copy */
+    .prompt-box {
+      background: #0d0e12;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 18px;
+    }
+    .prompt-header {
+      background: #15161d;
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .prompt-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-gray);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .copy-btn {
+      background: var(--red-subtle);
+      border: 1px solid var(--red);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: var(--red);
+    }
+    .prompt-content {
+      padding: 18px;
+      font-family: 'SFMono-Regular', Consolas, Monaco, monospace;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #e4e4e7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    /* Lead Gate Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 4, 6, 0.85);
+      backdrop-filter: blur(14px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal-card {
+      background: #121319;
+      border: 1px solid rgba(255, 31, 53, 0.4);
+      box-shadow: 0 0 80px rgba(255, 31, 53, 0.25);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      padding: 40px 36px;
+      text-align: center;
+      position: relative;
+      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalPop {
+      0% { opacity: 0; transform: scale(0.92) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: var(--text-gray);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+    .modal-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: var(--red-subtle);
+      border: 1px solid var(--red);
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+    .modal-title {
+      font-size: 26px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .modal-title em {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      color: var(--red);
+    }
+    .modal-desc {
+      font-size: 14px;
+      color: var(--text-gray);
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-gray);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: #090a0d;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 12px var(--red-glow);
+    }
+    .modal-status {
+      font-size: 13px;
+      margin-top: 14px;
+      display: none;
+    }
+    .modal-status.success {
+      display: block;
+      color: #2ecc71;
+    }
+    .modal-status.error {
+      display: block;
+      color: #ff3838;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #181920;
+      border: 1px solid var(--red);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 2000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--card-border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .footer-sig {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      color: var(--text-gray);
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    .settings-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Nav -->
+  <nav>
+    <div class="container nav-inner">
+      <div class="logo">
+        VIRAL CAROUSEL <span class="badge">AI FREE</span>
+      </div>
+      <div class="nav-actions">
+        <a href="#viewer" class="nav-link">Slide Showcase</a>
+        <a href="#prompts" class="nav-link">Prompt Vault</a>
+        <button class="btn btn-primary btn-sm" onclick="openLeadModal('nav_cta')">Unlock Prompts</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-kicker">
+        ⚡ 100% Free AI Tool Stack • 10-Minute Workflow
+      </div>
+      <h1>
+        Build High-Retention Carousels.
+        <em>engineered for an 80%+ swipe-through rate.</em>
+      </h1>
+      <p>
+        The exact prompt architecture, spatial design rules, and OpenArt style-lock trick to create viral dark editorial carousels in the Kallaway aesthetic.
+      </p>
+
+      <div style="display:flex; justify-content:center; gap:16px;">
+        <button class="btn btn-primary" onclick="openLeadModal('hero_primary')">
+          Unlock All 4 Master Prompts →
+        </button>
+        <a href="#viewer" class="btn btn-secondary">
+          Watch Screen Recording
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-val">$0.00</div>
+          <div class="stat-lbl">Tool Cost</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">10 Min</div>
+          <div class="stat-lbl">Production Time</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">7 Slides</div>
+          <div class="stat-lbl">Retention Architecture</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">100%</div>
+          <div class="stat-lbl">Style Consistency</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Carousel Viewer -->
+  <section id="viewer" class="viewer-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-kicker">Interactive Showcase</div>
+        <h2 class="section-title">The Complete 7-Slide Deck</h2>
+      </div>
+
+      <div class="viewer-card">
+        <div class="carousel-main-frame" id="mainFrame">
+          <!-- Dynamic media injected via JS -->
+        </div>
+
+        <div class="viewer-nav">
+          <button class="btn btn-secondary btn-sm" onclick="prevSlide()">← Previous</button>
+          <div class="slide-info-pill" id="slideInfoPill">Slide 01 / 07 · Deekay Motion Hook</div>
+          <button class="btn btn-primary btn-sm" onclick="nextSlide()">Next Slide →</button>
+        </div>
+
+        <div class="thumb-strip" id="thumbStrip">
+          <!-- Thumbnails injected via JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process & Prompt Vault -->
+  <section id="prompts" class="process-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-kicker">Step-By-Step Workflow</div>
+        <h2 class="section-title">The Master Prompt Vault</h2>
+        <p style="color:var(--text-gray); max-width:600px; margin:12px auto 0;">
+          Click any prompt below to copy directly into Claude or OpenArt.
+        </p>
+      </div>
+
+      <!-- Phase 1 -->
+      <div class="phase-card">
+        <span class="phase-badge">Phase 01 · Ideation Engine</span>
+        <h3>1. The Context Engine & <em>Viral Hook Scoring</em></h3>
+        <p class="phase-desc">
+          Never guess what topic will perform. Feed Claude your exact audience context and instruct it to rank 10 viral angles by retention potential.
+        </p>
+        <div class="prompt-box">
+          <div class="prompt-header">
+            <span class="prompt-title">Prompt 1 · Claude Setup & Ranking</span>
+            <button class="copy-btn" onclick="copyPrompt('p1')">
+              📋 Copy Prompt
+            </button>
+          </div>
+          <div class="prompt-content" id="p1">You are a world-class viral content strategist specializing in high-retention Instagram carousels.
+
+My Niche: [YOUR NICHE, e.g., AI Tools & Digital Creation]
+Target Audience: [YOUR AUDIENCE, e.g., Content creators and entrepreneurs looking for free workflows]
+Tone: Direct, bold, high-density value, zero fluff or corporate jargon.
+
+Give me 10 carousel post angles ranked by viral potential (/10).
+For each angle, provide:
+1. Hook headline (max 8 words, high curiosity or pain-point)
+2. 1-line psychological reason why it stops the scroll
+3. Viral score out of 10
+
+Do not write the copy yet. Wait for me to select 1 angle.</div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-card">
+        <span class="phase-badge">Phase 02 · Copywriting Architecture</span>
+        <h3>2. The 7-Slide <em>Retention Blueprint</em></h3>
+        <p class="phase-desc">
+          Engineered for an 80%+ swipe-through rate. Each slide delivers a single painful mistake or actionable step in under 40 words with zero fluff words.
+        </p>
+        <div class="prompt-box">
+          <div class="prompt-header">
+            <span class="prompt-title">Prompt 2 · 7-Slide Copy Deck</span>
+            <button class="copy-btn" onclick="copyPrompt('p2')">
+              📋 Copy Prompt
+            </button>
+          </div>
+          <div class="prompt-content" id="p2">I choose Angle #[NUMBER]: "[INSERT CHOSEN HOOK]".
+
+Write the complete 7-slide carousel copy deck following this strict retention structure:
+
+- Slide 1 (Hook Cover): Headline under 8 words + 1 curiosity sub-headline.
+- Slide 2 (The Paradigm Shift / Context): Establish the core mistake or workflow overview in under 35 words.
+- Slides 3 to 6 (Actionable Value Chunks): 1 tactical step per slide. Max 35-40 words each. Short, punchy sentences.
+- Slide 7 (Conversion CTA): Give a compelling reason to Save the post + Comment a trigger keyword (e.g. "CAROUSEL") to receive the full resource pack via automated DM.
+
+EDITORIAL CONSTRAINTS:
+- No em-dashes. No buzzwords ("delve", "crucial", "unlock", "testament").
+- Write in active voice. Every sentence must earn its place.</div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-card">
+        <span class="phase-badge">Phase 03 · Art Direction</span>
+        <h3>3. Prompting <em>Layout Specs</em> (Not Just Vibes)</h3>
+        <p class="phase-desc">
+          AI image models hallucinate clutter unless you enforce spatial layout constraints. Lock the canvas into 3 discrete zones: Headline Top, Focal Art Center, and Takeaway Bottom.
+        </p>
+        <div class="prompt-box">
+          <div class="prompt-header">
+            <span class="prompt-title">Prompt 3 · Spatial Layout Generator</span>
+            <button class="copy-btn" onclick="copyPrompt('p3')">
+              📋 Copy Prompt
+            </button>
+          </div>
+          <div class="prompt-content" id="p3">Now generate image generation prompts for all 7 slides to use in OpenArt.
+
+Apply these spatial layout constraints to every slide:
+- Canvas: 4:5 Portrait orientation (1080 x 1350).
+- Top 20% Zone: Clean, dark negative space for headline overlay.
+- Center 55% Zone: Focal flat 2D/isometric vector illustration, thick defined line art, high contrast.
+- Bottom 25% Zone: Uncluttered dark space for key takeaway and @impact.artist watermark.
+- Color Palette: Matte charcoal background (#09090C), crisp white, and crimson red (#FF1F35) accent pop.
+
+Output the prompts in a clean numbered list from Slide 1 to 7.</div>
+        </div>
+      </div>
+
+      <!-- Phase 4 -->
+      <div class="phase-card">
+        <span class="phase-badge">Phase 04 · Execution</span>
+        <h3>4. The OpenArt <em>Style-Lock Secret</em></h3>
+        <p class="phase-desc">
+          The #1 problem in AI carousels is style drift. Here is the 3-step anchor trick that ensures all 7 slides look 100% unified in style, character, and line weight.
+        </p>
+        <div class="prompt-box">
+          <div class="prompt-header">
+            <span class="prompt-title">Prompt 4 · Style Anchor Prefix</span>
+            <button class="copy-btn" onclick="copyPrompt('p4')">
+              📋 Copy Prompt
+            </button>
+          </div>
+          <div class="prompt-content" id="p4">STEPS TO LOCK STYLE ON OPENART (FREE TIER):
+1. Generate Slide 1 first. This is your master Visual Anchor.
+2. Download it as "slide-01-cover.png".
+3. For slides 2 through 7, upload "slide-01-cover.png" into the Style Reference slot and begin every prompt with this prefix:
+
+"Using slide-01-cover.png as style reference, keep identical visual style, thick outline line-weight, dark charcoal matte background (#09090C), red accents (#FF1F35), and vector illustration rendering. [INSERT SLIDE SPECIFIC ACTION]"</div>
+        </div>
+      </div>
+
+      <!-- Phase 5 -->
+      <div class="phase-card">
+        <span class="phase-badge">Phase 05 · Distribution</span>
+        <h3>5. High-Converting <em>Caption & DM Automation</em></h3>
+        <p class="phase-desc">
+          Pair your carousel with a story-driven caption and an automated keyword comment trigger to turn viewers into email leads on autopilot.
+        </p>
+        <div class="prompt-box">
+          <div class="prompt-header">
+            <span class="prompt-title">Prompt 5 · Caption & Hashtag Formula</span>
+            <button class="copy-btn" onclick="copyPrompt('p5')">
+              📋 Copy Prompt
+            </button>
+          </div>
+          <div class="prompt-content" id="p5">Write a high-converting Instagram caption for this carousel:
+
+Structure:
+- Line 1 Hook: Pain point or bold contrarian statement.
+- Lines 2-4: The 10-minute workflow breakdown (4 numbered bullet points).
+- Line 5: Tool cost ($0.00).
+- Call to Action: Comment "CAROUSEL" to get the complete prompt deck sent via DM.
+- Reminder: Save this post for reference.
+- 10 targeted niche hashtags (mix of 100k-500k volume).</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lead Gate Modal -->
+  <div class="modal-backdrop" id="leadModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeLeadModal()">✕</button>
+      <span class="modal-badge">Instant Free Access</span>
+      <h3 class="modal-title">Unlock The Complete <em>Prompt Deck</em></h3>
+      <p class="modal-desc">
+        Enter your name and email to immediately unlock all 5 copy-paste prompts, spatial layout specs, and the OpenArt workflow guide.
+      </p>
+
+      <form id="leadForm" onsubmit="handleLeadSubmit(event)">
+        <div class="form-group">
+          <label class="form-label" for="userName">Your First Name</label>
+          <input type="text" id="userName" class="form-input" placeholder="e.g. Alex" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="userEmail">Your Best Email</label>
+          <input type="email" id="userEmail" class="form-input" placeholder="name@example.com" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; margin-top:8px;">
+          Unlock Prompts Now →
+        </button>
+
+        <div class="modal-status" id="modalStatus"></div>
+      </form>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:14px;">
+        🔒 Zero spam. We only share high-value creator workflows.
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div class="toast" id="toast">
+    <span>✓</span> <span id="toastMsg">Copied to clipboard!</span>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-sig">@impact.artist</div>
+      <p>Viral AI Carousel Blueprint • Built with Kallaway Editorial System</p>
+      <button class="settings-btn" onclick="openSettingsModal()">⚙ Configure Google Sheets Webhook</button>
+    </div>
+  </footer>
+
+  <script>
+    // Configuration
+    // Replace with your deployed Google Apps Script Web App URL:
+    let GOOGLE_SHEET_WEBHOOK_URL = localStorage.getItem('google_sheet_webhook') || '';
+
+    // Carousel Slides Data
+    const slidesData = [
+      { type: 'video', src: 'assets/slide-01.mp4', poster: 'assets/slide-01.png', title: 'Slide 01 · Deekay Motion Hook' },
+      { type: 'video', src: 'assets/slide-02.mp4', poster: 'assets/slide-02.png', title: 'Slide 02 · Live Screencast Workflow' },
+      { type: 'image', src: 'assets/slide-03.png', title: 'Slide 03 · 1. Coordinate Chart (Bury The Lead)' },
+      { type: 'image', src: 'assets/slide-04.png', title: 'Slide 04 · 2. Glass Blueprint Framework' },
+      { type: 'image', src: 'assets/slide-05.png', title: 'Slide 05 · 3. Mobile Spatial Boundaries' },
+      { type: 'image', src: 'assets/slide-06.png', title: 'Slide 06 · 4. Style-Lock System Architecture' },
+      { type: 'image', src: 'assets/slide-07.png', title: 'Slide 07 · 5. Exact Kallaway Comment CTA' },
+    ];
+
+    let currentSlideIdx = 0;
+    let isUnlocked = localStorage.getItem('carousel_unlocked') === 'true';
+
+    // Initialize Viewer
+    function initViewer() {
+      const mainFrame = document.getElementById('mainFrame');
+      const thumbStrip = document.getElementById('thumbStrip');
+      
+      thumbStrip.innerHTML = '';
+      slidesData.forEach((s, idx) => {
+        const thumb = document.createElement('div');
+        thumb.className = `thumb-item ${idx === 0 ? 'active' : ''}`;
+        thumb.onclick = () => goToSlide(idx);
+        const img = document.createElement('img');
+        img.src = s.poster || s.src;
+        thumb.appendChild(img);
+        thumbStrip.appendChild(thumb);
+      });
+
+      renderSlide(0);
+    }
+
+    function renderSlide(idx) {
+      currentSlideIdx = idx;
+      const s = slidesData[idx];
+      const mainFrame = document.getElementById('mainFrame');
+      const infoPill = document.getElementById('slideInfoPill');
+
+      infoPill.textContent = s.title;
+
+      if (s.type === 'video') {
+        mainFrame.innerHTML = `
+          <video src="${s.src}" poster="${s.poster || ''}" autoplay loop muted playsinline controls style="width:100%; height:100%; object-fit:cover;"></video>
+        `;
+      } else {
+        mainFrame.innerHTML = `
+          <img src="${s.src}" alt="${s.title}" style="width:100%; height:100%; object-fit:cover;">
+        `;
+      }
+
+      // Update thumbs
+      document.querySelectorAll('.thumb-item').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+      });
+    }
+
+    function nextSlide() {
+      goToSlide((currentSlideIdx + 1) % slidesData.length);
+    }
+
+    function prevSlide() {
+      goToSlide((currentSlideIdx - 1 + slidesData.length) % slidesData.length);
+    }
+
+    function goToSlide(idx) {
+      renderSlide(idx);
+    }
+
+    // Lead Gate Modal
+    function openLeadModal(source = 'default') {
+      if (isUnlocked) {
+        showToast('All prompts are already unlocked!');
+        return;
+      }
+      document.getElementById('leadModal').classList.add('active');
+    }
+
+    function closeLeadModal() {
+      document.getElementById('leadModal').classList.remove('active');
+    }
+
+    async function handleLeadSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('userName').value.trim();
+      const email = document.getElementById('userEmail').value.trim();
+      const statusEl = document.getElementById('modalStatus');
+
+      statusEl.className = 'modal-status';
+      statusEl.textContent = 'Saving & unlocking...';
+      statusEl.style.display = 'block';
+
+      // Always save locally
+      const leads = JSON.parse(localStorage.getItem('captured_leads') || '[]');
+      leads.push({ name, email, time: new Date().toISOString() });
+      localStorage.setItem('captured_leads', JSON.stringify(leads));
+
+      // Send to Google Sheets Webhook if configured
+      if (GOOGLE_SHEET_WEBHOOK_URL) {
+        try {
+          await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+            method: 'POST',
+            mode: 'no-cors', // standard for Google Apps Script webhooks
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, source: 'Viral Carousel Landing Page' })
+          });
+        } catch (err) {
+          console.warn('Webhook error:', err);
+        }
+      }
+
+      // Unlock content
+      isUnlocked = true;
+      localStorage.setItem('carousel_unlocked', 'true');
+      statusEl.className = 'modal-status success';
+      statusEl.textContent = '✓ Unlocked! Enjoy the full blueprint.';
+
+      setTimeout(() => {
+        closeLeadModal();
+        showToast('✓ Prompts unlocked successfully!');
+      }, 800);
+    }
+
+    // 1-Click Copy Prompt
+    function copyPrompt(id) {
+      if (!isUnlocked) {
+        openLeadModal('prompt_click');
+        return;
+      }
+      const el = document.getElementById(id);
+      if (el) {
+        navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+          showToast('Copied prompt to clipboard!');
+        });
+      }
+    }
+
+    // Toast
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    // Google Sheets Webhook Config
+    function openSettingsModal() {
+      const current = localStorage.getItem('google_sheet_webhook') || '';
+      const input = prompt("Paste your Google Apps Script Web App URL here:\n(e.g. https://script.google.com/macros/s/XXXX/exec)", current);
+      if (input !== null) {
+        localStorage.setItem('google_sheet_webhook', input.trim());
+        GOOGLE_SHEET_WEBHOOK_URL = input.trim();
+        alert("Google Sheet webhook saved successfully!");
+      }
+    }
+
+    // Auto popup modal after 4 seconds if not unlocked
+    window.addEventListener('DOMContentLoaded', () => {
+      initViewer();
+      if (!isUnlocked) {
+        setTimeout(() => {
+          openLeadModal('timed_popup');
+        }, 3500);
+      }
+    });
+  </script>
+</body>
+</html>
